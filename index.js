@@ -1,9 +1,14 @@
 'use strict';
 
 var path = require('path');
-module.exports = function(fn) {
+module.exports = function(moduleCWD, fn) {
+  if (typeof moduleCWD == 'function') {
+    fn = moduleCWD;
+    moduleCWD = null;
+  }
+
   var parentCWD = process.cwd();
-  var moduleCWD = path.dirname(module.parent.filename);
+  moduleCWD = moduleCWD || path.dirname(module.parent.filename);
   if (parentCWD === moduleCWD) parentCWD = false;
   return function(grunt, overridecfg) {
     // Merge override with parent
